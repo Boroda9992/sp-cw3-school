@@ -3,15 +3,17 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repositories.FacultyRepository;
 
 public class FacultyServiceImplTest {
-
+    private FacultyRepository facultyRepository;
     private FacultyService facultyService;
 
     @BeforeEach
     public void clear() {
-        facultyService = new FacultyServiceImpl();
+        facultyService = new FacultyServiceImpl(facultyRepository);
     }
 
     @Test
@@ -30,7 +32,6 @@ public class FacultyServiceImplTest {
         Faculty facultyToFind = new Faculty(1, "Testendor", "000FFF");
         facultyService.addFaculty(facultyToFind);
         //when
-
         Faculty studentBeingFound = new Faculty(facultyToFind.getId(), facultyToFind.getName(), facultyToFind.getColour());
         //then
         Assertions.assertEquals(facultyToFind, studentBeingFound);
