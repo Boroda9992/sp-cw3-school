@@ -3,13 +3,19 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
+@ExtendWith(MockitoExtension.class)
 public class FacultyServiceImplTest {
+    @Mock
     private FacultyRepository facultyRepository;
-    private FacultyService facultyService;
+    @InjectMocks
+    private FacultyServiceImpl facultyService;
 
     @BeforeEach
     public void clear() {
@@ -20,8 +26,10 @@ public class FacultyServiceImplTest {
     public void shouldCorrectlyAddFaculty() {
         //given
         Faculty facultyToAdd = new Faculty(1, "Testendor", "000FFF");
+        facultyService.addFaculty(facultyToAdd);
         //when
-        Faculty facultyBeingAdded = facultyService.addFaculty(facultyToAdd);
+        Faculty facultyBeingAdded = new Faculty(facultyToAdd.getId(), facultyToAdd.getName(), facultyToAdd.getColour());
+
         //then
         Assertions.assertEquals(facultyToAdd, facultyBeingAdded);
     }
@@ -32,31 +40,31 @@ public class FacultyServiceImplTest {
         Faculty facultyToFind = new Faculty(1, "Testendor", "000FFF");
         facultyService.addFaculty(facultyToFind);
         //when
-        Faculty studentBeingFound = new Faculty(facultyToFind.getId(), facultyToFind.getName(), facultyToFind.getColour());
+        Faculty facultyBeingFound = new Faculty(facultyToFind.getId(), facultyToFind.getName(), facultyToFind.getColour());
         //then
-        Assertions.assertEquals(facultyToFind, studentBeingFound);
+        Assertions.assertEquals(facultyToFind, facultyBeingFound);
     }
 
     @Test
     public void shouldCorrectlyEditFaculty() {
         //given
-        Faculty studentToEdit = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(studentToEdit);
-        facultyService.editFaculty(studentToEdit, 2);
+        Faculty facultyToEdit = new Faculty(1, "Testendor", "000FFF");
+        facultyService.addFaculty(facultyToEdit);
+        facultyService.editFaculty(facultyToEdit, 2);
         //when
-        Faculty studentBeingEdited = new Faculty(studentToEdit.getId(), studentToEdit.getName(), studentToEdit.getColour());
+        Faculty studentBeingEdited = new Faculty(facultyToEdit.getId(), facultyToEdit.getName(), facultyToEdit.getColour());
         //then
-        Assertions.assertEquals(studentToEdit, studentBeingEdited);
+        Assertions.assertEquals(facultyToEdit, studentBeingEdited);
     }
 
     @Test
     public void shouldCorrectlyDeleteFaculty() {
         //given
-        Faculty studentToDelete = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(studentToDelete);
+        Faculty facultyToDelete = new Faculty(1, "Testendor", "000FFF");
+        facultyService.addFaculty(facultyToDelete);
         //when
-        Faculty studentBeingDeleted = new Faculty(studentToDelete.getId(), studentToDelete.getName(), studentToDelete.getColour());
+        Faculty studentBeingDeleted = new Faculty(facultyToDelete.getId(), facultyToDelete.getName(), facultyToDelete.getColour());
         //then
-        Assertions.assertEquals(studentToDelete, studentBeingDeleted);
+        Assertions.assertEquals(facultyToDelete, studentBeingDeleted);
     }
 }

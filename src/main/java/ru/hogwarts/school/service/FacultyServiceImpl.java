@@ -9,10 +9,9 @@ import java.util.HashMap;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
-    @Autowired
+
     private final FacultyRepository facultyRepository;
 
-    @Autowired
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }

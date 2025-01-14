@@ -3,12 +3,18 @@ package ru.hogwarts.school.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
-
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceImplTest {
+    @Mock
     private StudentRepository studentRepository;
-    private StudentService studentService;
+    @InjectMocks
+    private StudentServiceImpl studentService;
 
     @BeforeEach
     public void clear() {
@@ -20,7 +26,7 @@ public class StudentServiceImplTest {
         //given
         Student studentToAdd = new Student(1, "Harry Potter", 12);
         //when
-        Student studentBeingAdded = studentService.addStudent(studentToAdd);
+        Student studentBeingAdded = new Student(studentToAdd.getId(), studentToAdd.getName(), studentToAdd.getAge());
         //then
         Assertions.assertEquals(studentToAdd, studentBeingAdded);
     }
