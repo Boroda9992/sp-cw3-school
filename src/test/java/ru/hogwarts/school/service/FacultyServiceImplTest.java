@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
@@ -26,12 +27,11 @@ public class FacultyServiceImplTest {
     public void shouldCorrectlyAddFaculty() {
         //given
         Faculty facultyToAdd = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(facultyToAdd);
         //when
-        Faculty facultyBeingAdded = new Faculty(facultyToAdd.getId(), facultyToAdd.getName(), facultyToAdd.getColour());
-
+        Mockito.when(facultyRepository.save(facultyToAdd)).thenReturn(facultyToAdd);
+        Faculty result = facultyService.addFaculty(facultyToAdd);
         //then
-        Assertions.assertEquals(facultyToAdd, facultyBeingAdded);
+        Assertions.assertEquals(facultyToAdd, result);
     }
 
     @Test
