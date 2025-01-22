@@ -9,7 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
+
+import java.util.Optional;
+
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class FacultyServiceImplTest {
@@ -23,48 +28,55 @@ public class FacultyServiceImplTest {
         facultyService = new FacultyServiceImpl(facultyRepository);
     }
 
+
     @Test
-    public void shouldCorrectlyAddFaculty() {
+    public void shouldCorrectlyAddNewStudent() {
         //given
         Faculty facultyToAdd = new Faculty(1, "Testendor", "000FFF");
-        //when
         Mockito.when(facultyRepository.save(facultyToAdd)).thenReturn(facultyToAdd);
+        //when
         Faculty result = facultyService.addFaculty(facultyToAdd);
         //then
+        Assertions.assertNotNull(result);
         Assertions.assertEquals(facultyToAdd, result);
+        Mockito.verify(facultyRepository, times(1)).save(facultyToAdd);
     }
 
     @Test
-    public void shouldCorrectlyFindFaculty() {
+    public void shouldCorrectlyFindStudent() {
         //given
         Faculty facultyToFind = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(facultyToFind);
+        Mockito.when(facultyRepository.findById(1L)).thenReturn(Optional.of(facultyToFind));
         //when
-        Faculty facultyBeingFound = new Faculty(facultyToFind.getId(), facultyToFind.getName(), facultyToFind.getColour());
+        Faculty result = facultyService.findFaculty(facultyToFind.getId());
         //then
-        Assertions.assertEquals(facultyToFind, facultyBeingFound);
+        Assertions.assertEquals(facultyToFind, result);
+        Mockito.verify(facultyRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void shouldCorrectlyEditFaculty() {
+    public void shouldCorrectlyEditStudent() {
         //given
-        Faculty facultyToEdit = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(facultyToEdit);
-        facultyService.editFaculty(facultyToEdit, 2);
+        Faculty facultyToEdit = new Faculty(2L, "Testendor", "000FFF");
+
+        Mockito.when(facultyRepository.existsById(1L)).thenReturn(true);
+        Mockito.when(facultyRepository.save(facultyToEdit)).thenReturn(facultyToEdit);
         //when
-        Faculty studentBeingEdited = new Faculty(facultyToEdit.getId(), facultyToEdit.getName(), facultyToEdit.getColour());
+        Faculty result = facultyService.editFaculty(facultyToEdit, 1L);
         //then
-        Assertions.assertEquals(facultyToEdit, studentBeingEdited);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2L, result.getId());
+        Mockito.verify(facultyRepository, times(1)).existsById(1L);
+        Mockito.verify(facultyRepository, times(1)).save(facultyToEdit);
     }
 
     @Test
-    public void shouldCorrectlyDeleteFaculty() {
+    public void testDeleteStudent() {
         //given
-        Faculty facultyToDelete = new Faculty(1, "Testendor", "000FFF");
-        facultyService.addFaculty(facultyToDelete);
+        Mockito.doNothing().when(facultyRepository).deleteById(1L);
         //when
-        Faculty studentBeingDeleted = new Faculty(facultyToDelete.getId(), facultyToDelete.getName(), facultyToDelete.getColour());
+        facultyService.deleteFaculty(1L);
         //then
-        Assertions.assertEquals(facultyToDelete, studentBeingDeleted);
+        Mockito.verify(facultyRepository, times(1)).deleteById(1L);
     }
 }

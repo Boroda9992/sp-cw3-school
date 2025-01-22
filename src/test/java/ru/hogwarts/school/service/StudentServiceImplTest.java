@@ -10,6 +10,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
+
+import java.util.Optional;
+
+import static org.mockito.Mockito.times;
+
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceImplTest {
     @Mock
@@ -18,8 +23,7 @@ public class StudentServiceImplTest {
     private StudentServiceImpl studentService;
 
     @BeforeEach
-    public void setup() {
-        studentRepository = Mockito.mock(StudentRepository.class);
+    public void clear() {
         studentService = new StudentServiceImpl(studentRepository);
     }
 
@@ -27,50 +31,52 @@ public class StudentServiceImplTest {
     public void shouldCorrectlyAddNewStudent() {
         //given
         Student studentToAdd = new Student(1, "Harry Potter", 12);
-        //when
         Mockito.when(studentRepository.save(studentToAdd)).thenReturn(studentToAdd);
+        //when
         Student result = studentService.addStudent(studentToAdd);
         //then
+        Assertions.assertNotNull(result);
         Assertions.assertEquals(studentToAdd, result);
+        Mockito.verify(studentRepository, times(1)).save(studentToAdd);
     }
 
-    //    public void shouldCorrectlyFindStudent(long id);
-//    @Test
-//    public void shouldCorrectlyFindStudent() {
-//        //given
-//        Student studentToFind = new Student(1, "Harry", 12);
-//        //when
-//        Mockito.when(studentRepository.save(studentToFind)).thenReturn(studentToFind);
-//        studentService.addStudent(studentToFind);
-//        Student result = studentService.findStudent(studentToFind.getId());
-//
-//        //then
-//        Assertions.assertEquals(studentToFind, result);
-//
-//    }
+    @Test
+    public void shouldCorrectlyFindStudent() {
+        //given
+        Student studentToFind = new Student(1, "Harry", 12);
+        Mockito.when(studentRepository.findById(1L)).thenReturn(Optional.of(studentToFind));
+        //when
+        Student result = studentService.findStudent(studentToFind.getId());
+        //then
+        Assertions.assertEquals(studentToFind, result);
+        Mockito.verify(studentRepository, times(1)).findById(1L);
+    }
 
     @Test
     public void shouldCorrectlyEditStudent() {
         //given
-        Student studentToEdit = new Student(1, "Harry", 12);
-        long newId = studentToEdit.getId() + 1;
-        //when
+        Student studentToEdit = new Student(2L, "Harry", 12);
+
+        Mockito.when(studentRepository.existsById(1L)).thenReturn(true);
         Mockito.when(studentRepository.save(studentToEdit)).thenReturn(studentToEdit);
-        Student result = studentService.editStudent(studentToEdit,newId);
+        //when
+        Student result = studentService.editStudent(studentToEdit, 1L);
         //then
-        Assertions.assertEquals(studentToEdit, result);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2L, result.getId());
+        Mockito.verify(studentRepository, times(1)).existsById(1L);
+        Mockito.verify(studentRepository, times(1)).save(studentToEdit);
     }
 
-//    @Test
-//    public void shouldCorrectlyDeleteStudent() {
-//        //given
-//        Student studentToDelete = new Student(1, "Harry", 12);
-//        studentService.addStudent(studentToDelete);
-//        //when
-//
-//        //then
-//        Assertions.assertEquals(studentToDelete, studentBeingDeleted);
-//    }
+    @Test
+    public void testDeleteStudent() {
+        //given
+        Mockito.doNothing().when(studentRepository).deleteById(1L);
+        //when
+        studentService.deleteStudent(1L);
+        //then
+        Mockito.verify(studentRepository, times(1)).deleteById(1L);
+    }
 
 
 }
