@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,10 +21,6 @@ public class StudentServiceImplTest {
     @InjectMocks
     private StudentServiceImpl studentService;
 
-    @BeforeEach
-    public void clear() {
-        studentService = new StudentServiceImpl(studentRepository);
-    }
 
     @Test
     public void shouldCorrectlyAddNewStudent() {

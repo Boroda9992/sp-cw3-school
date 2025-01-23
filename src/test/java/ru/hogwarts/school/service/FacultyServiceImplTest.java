@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.Optional;
@@ -23,14 +21,9 @@ public class FacultyServiceImplTest {
     @InjectMocks
     private FacultyServiceImpl facultyService;
 
-    @BeforeEach
-    public void clear() {
-        facultyService = new FacultyServiceImpl(facultyRepository);
-    }
-
 
     @Test
-    public void shouldCorrectlyAddNewStudent() {
+    public void shouldCorrectlyAddNewFaculty() {
         //given
         Faculty facultyToAdd = new Faculty(1, "Testendor", "000FFF");
         Mockito.when(facultyRepository.save(facultyToAdd)).thenReturn(facultyToAdd);
@@ -43,7 +36,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void shouldCorrectlyFindStudent() {
+    public void shouldCorrectlyFindFaculty() {
         //given
         Faculty facultyToFind = new Faculty(1, "Testendor", "000FFF");
         Mockito.when(facultyRepository.findById(1L)).thenReturn(Optional.of(facultyToFind));
@@ -55,7 +48,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void shouldCorrectlyEditStudent() {
+    public void shouldCorrectlyEditFaculty() {
         //given
         Faculty facultyToEdit = new Faculty(2L, "Testendor", "000FFF");
 
@@ -71,7 +64,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void testDeleteStudent() {
+    public void testDeleteFaculty() {
         //given
         Mockito.doNothing().when(facultyRepository).deleteById(1L);
         //when
