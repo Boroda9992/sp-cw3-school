@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -43,4 +45,9 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping()
+    public List<Student> findByAgeBetween(int min, int max){
+        return studentService.findByAgeBetween(min,max);
+    };
 }

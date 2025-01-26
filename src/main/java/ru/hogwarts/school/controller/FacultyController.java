@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/faculty")
 public class FacultyController {
@@ -42,6 +44,10 @@ public class FacultyController {
     public ResponseEntity<Void> deleteFaculty(@PathVariable long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping
+    public List<Faculty> findByNameIgnoreCaseOrColourIgnoreCase(String name, String colour){
+        return facultyService.findByNameIgnoreCaseOrColourIgnoreCase(name,colour);
     }
 
 }

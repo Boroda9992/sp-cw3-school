@@ -1,18 +1,26 @@
 package ru.hogwarts.school.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
 public class Student {
+    @Id
+    @GeneratedValue
     final long id;
     final String name;
     final int age;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
     public Student(long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
-//get
+
+    //get
     public long getId() {
         return id;
     }
@@ -24,7 +32,12 @@ public class Student {
     public int getAge() {
         return age;
     }
-//set
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    //set
     public long setId(long l) {
         return id;
     }
@@ -36,7 +49,12 @@ public class Student {
     public int setAge() {
         return age;
     }
-//equals
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    //equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,12 +62,14 @@ public class Student {
         Student student = (Student) o;
         return id == student.id && age == student.age && Objects.equals(name, student.name);
     }
-//hash-code
+
+    //hash-code
     @Override
     public int hashCode() {
         return Objects.hash(id, name, age);
     }
-//toString
+
+    //toString
     @Override
     public String toString() {
         return "Student{" +

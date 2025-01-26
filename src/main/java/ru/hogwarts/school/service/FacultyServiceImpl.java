@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -39,5 +40,10 @@ public class FacultyServiceImpl implements FacultyService {
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);
 
+    }
+
+    @Override
+    public List<Faculty> findByNameIgnoreCaseOrColourIgnoreCase(String name, String colour) {
+        return facultyRepository.findByNameIgnoreCaseOrColourIgnoreCase(name,colour);
     }
 }

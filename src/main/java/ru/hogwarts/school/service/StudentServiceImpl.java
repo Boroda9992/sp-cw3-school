@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -38,5 +39,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(long id) {
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min,max);
     }
 }

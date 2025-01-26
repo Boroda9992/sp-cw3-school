@@ -3,8 +3,11 @@ package ru.hogwarts.school.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+import java.util.List;
 import java.util.Objects;
+
 @Entity
 public class Faculty {
 
@@ -14,12 +17,17 @@ public class Faculty {
     final String name;
     final String colour;
 
+    @OneToMany(mappedBy = "faculty")
+    private List<Student> students;
+
+
     public Faculty(long id, String name, String colour) {
         this.id = id;
         this.name = name;
         this.colour = colour;
     }
-//get
+
+    //get
     public long getId() {
         return id;
     }
@@ -31,7 +39,12 @@ public class Faculty {
     public String getColour() {
         return colour;
     }
-//set
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    //set
     public long setId(long id) {
         return id;
     }
@@ -43,7 +56,12 @@ public class Faculty {
     public String setColour() {
         return colour;
     }
-//equals
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    //equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,12 +69,14 @@ public class Faculty {
         Faculty faculty = (Faculty) o;
         return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(colour, faculty.colour);
     }
-//hash-code
+
+    //hash-code
     @Override
     public int hashCode() {
         return Objects.hash(id, name, colour);
     }
-//toString
+
+    //toString
     @Override
     public String toString() {
         return "Faculty{" +
