@@ -7,7 +7,6 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -42,8 +41,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(long id) {
+    public Void deleteStudent(long id) {
         studentRepository.deleteById(id);
+        return null;
     }
 
     @Override

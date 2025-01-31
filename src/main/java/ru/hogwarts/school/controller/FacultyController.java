@@ -19,12 +19,8 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> getFacultyInfo(@PathVariable long id) {
-        Faculty faculty = facultyService.findFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(faculty);
+    public Faculty getFacultyInfo(@PathVariable long id) {
+        return facultyService.findFaculty(id);
     }
 
     @PostMapping
@@ -33,18 +29,13 @@ public class FacultyController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty, @PathVariable long id) {
-        Faculty foundFaculty = facultyService.editFaculty(faculty, id);
-        if (foundFaculty == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(foundFaculty);
+    public Faculty editFaculty(@RequestBody Faculty faculty, @PathVariable long id) {
+        return facultyService.editFaculty(faculty, id);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteFaculty(@PathVariable long id) {
-        facultyService.deleteFaculty(id);
-        return ResponseEntity.ok().build();
+    public Void deleteFaculty(@PathVariable long id) {
+        return facultyService.deleteFaculty(id);
     }
     @GetMapping
     public List<Faculty> findByNameIgnoreCaseOrColourIgnoreCase(String name, String colour){
