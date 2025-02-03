@@ -6,9 +6,14 @@ import java.util.List;
 
 public interface StudentService {
     Student addStudent(Student student);
+
     Student findStudent(long id);
+
     Student editStudent(Student student, long id);
+
     Void deleteStudent(long id);
+
     List<Student> findByAgeBetween(int min, int max);
+
     List<Student> findAllByFaculty(long facultyId);
 }
